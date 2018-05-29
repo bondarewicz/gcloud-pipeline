@@ -5,6 +5,6 @@ see https://cloud.google.com/container-registry/docs/pushing-and-pulling?hl=en_U
 ```
 npm install 
 gcloud auth configure-docker
-docker build -t gcr.io/gcloud-pipeline/gcloud-pipeline:0.0.8 .   
-docker run -p 8080:8080 -d gcr.io/gcloud-pipeline/gcloud-pipeline:0.0.8
-docker push gcr.io/gcloud-pipeline/gcloud-pipeline:0.0.8
+docker build -t gcr.io/gcloud-pipeline/gcloud-pipeline:0.0.9 .   
+docker run -p 8080:8080 -d gcr.io/gcloud-pipeline/gcloud-pipeline:0.0.9
+docker push gcr.io/gcloud-pipeline/gcloud-pipeline:0.0.9
