@@ -1,7 +1,7 @@
 {
   "name": "gcloud-pipeline",
   "private": true,
-  "version": "0.0.15",
+  "version": "0.0.16",
   "dependencies": {
     "express": "3.2.4"
   }
