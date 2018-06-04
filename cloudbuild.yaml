@@ -1,5 +1,10 @@
 steps:
 - name: 'gcr.io/cloud-builders/docker'
   args: [ 'build', '-t', 'gcr.io/gcloud-pipeline/gcloud-pipeline:0.0.17', '.' ]
-images:
-- 'gcr.io/gcloud-pipeline/gcloud-pipeline:0.0.17'
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/gcloud-pipeline/gcloud-pipeline:0.0.17']
+- name: 'gcr.io/cloud-builders/kubectl'
+  args: ['set', 'image', 'deployment/gcloud-deployment', 'gcloud-container=gcr.io/gcloud-pipeline/gcloud-pipeline:0.0.17']
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=cluster-1'
