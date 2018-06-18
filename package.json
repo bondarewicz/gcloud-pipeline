@@ -1,8 +1,11 @@
 {
   "name": "gcloud-pipeline",
   "private": true,
-  "version": "0.0.25",
+  "version": "0.0.26",
   "dependencies": {
     "express": "3.2.4"
+  },
+  "scripts": {
+    "start": "node index.js"
   }
 }
