@@ -1,5 +1,5 @@
 steps:
 - name: 'gcr.io/cloud-builders/docker'
-  args: [ 'build', '-t', 'gcr.io/gcloud-pipeline/gcloud-pipeline:0.0.30', '.' ]
+  args: [ 'build', '-t', 'gcr.io/gcloud-pipeline/gcloud-pipeline:0.0.31', '.' ]
 images:
-- 'gcr.io/gcloud-pipeline/gcloud-pipeline:0.0.30'
+- 'gcr.io/gcloud-pipeline/gcloud-pipeline:0.0.31'
