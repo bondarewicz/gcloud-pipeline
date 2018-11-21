@@ -6,7 +6,7 @@ var PORT = process.env.PORT || DEFAULT_PORT;
 var app = express();
 
 app.get('/', function(req, res) {
-  res.send(`Hello gcloud-pipeline ${version}`);
+  res.send(`gcloud-pipeline v.${version}`);
 });
 
 app.listen(PORT);
