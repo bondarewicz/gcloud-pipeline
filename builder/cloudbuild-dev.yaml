@@ -24,9 +24,9 @@ steps:
       - |
           echo "BRANCH_NAME $BRANCH_NAME"
           echo $(git symbolic-ref --short HEAD)
-          echo $(git symbolic-ref --short HEAD | tr '//' '-')
+          echo $BRANCH_NAME | tr '//' '-')
           
-          export _BRANCH=$(git symbolic-ref --short HEAD | tr '//' '-')
+          export _BRANCH=$BRANCH_NAME | tr '//' '-')
           echo "BRANCH $_BRANCH"
           
           docker build -t eu.gcr.io/$PROJECT_ID/gcloud-pipeline:${_BRANCH}-${SHORT_SHA} .
