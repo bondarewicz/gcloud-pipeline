@@ -22,16 +22,11 @@ steps:
     args: 
       - '-c'
       - |
-          echo "BRANCH_NAME $BRANCH_NAME"
-          echo $(git symbolic-ref --short HEAD)
-          echo $BRANCH_NAME | tr '//' '-'
-          
-          export _BRANCH_NAME=$(git symbolic-ref --short HEAD)
-          echo "${_BRANCH_NAME}"
-          
-          docker build -t eu.gcr.io/$PROJECT_ID/gcloud-pipeline:${BRANCH_NAME| tr '//' '-'}-${SHORT_SHA} .
-
-
+          echo "raw $BRANCH_NAME"
+          _tmpvar=`echo $BRANCH_NAME | tr '//' '-'`
+          echo ${_tmpvar}
+          echo "eu.gcr.io/$PROJECT_ID/gcloud-pipeline:${_MOD_BRANCH_NAME}-${SHORT_SHA}"
+          docker build -t eu.gcr.io/$PROJECT_ID/gcloud-pipeline:${_MOD_BRANCH_NAME}-${SHORT_SHA} .
 
 ### Test
 
@@ -43,7 +38,7 @@ steps:
     args: 
       - '-c'
       - |
-          docker push eu.gcr.io/$PROJECT_ID/gcloud-pipeline:${BRANCH_NAME}-${SHORT_SHA}
+          docker push eu.gcr.io/$PROJECT_ID/gcloud-pipeline:${_MOD_BRANCH_NAME}-${SHORT_SHA}
 
 
 
@@ -76,3 +71,7 @@ steps:
           kubectl apply --namespace ${BRANCH_NAME} --recursive -f kubernetes/deployments/dev
           kubectl apply --namespace ${BRANCH_NAME} --recursive -f kubernetes/services
 
+substitutions:
+  _MOD_BRANCH_NAME: $_tmpvar
+options:
+  substitution_option: 'ALLOW_LOOSE'  
