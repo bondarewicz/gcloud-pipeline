@@ -67,10 +67,13 @@ steps:
 
           _tmpvar=`echo $BRANCH_NAME | tr '//' '-'`
           echo ${_tmpvar}
+          
           echo "eu.gcr.io/$PROJECT_ID/gcloud-pipeline:${_MOD_BRANCH_NAME}-${SHORT_SHA}"
           
 
-          sed -i 's|eu.gcr.io/$PROJECT_ID/gcloud-pipeline:.*|eu.gcr.io/$PROJECT_ID/gcloud-pipeline:${_MOD_BRANCH_NAME}-${SHORT_SHA}|' ./kubernetes/deployments/dev/*.yaml
+          sed -i "s|eu.gcr.io/$PROJECT_ID/gcloud-pipeline:.*|eu.gcr.io/$PROJECT_ID/gcloud-pipeline:${_MOD_BRANCH_NAME}-${SHORT_SHA}|" ./kubernetes/deployments/dev/*.yaml
+          
+          cat ./kubernetes/deployments/dev/gcloud-pipeline-dev.yaml
           
           kubectl get ns ${_MOD_BRANCH_NAME} || kubectl create ns ${_MOD_BRANCH_NAME}
           kubectl apply --namespace ${_MOD_BRANCH_NAME} --recursive -f kubernetes/deployments/dev
