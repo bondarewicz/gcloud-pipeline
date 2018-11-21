@@ -20,7 +20,7 @@ steps:
     name: 'gcr.io/cloud-builders/docker'
     entrypoint: 'bash'
     env:
-    - 'BRANCH="$(git branch | grep \* | cut -d ' ' -f2 | tr '//' '-')"'
+      - 'BRANCH="$(git branch | grep \* | cut -d ' ' -f2 | tr '//' '-')"'
     args: 
       - '-c'
       - |
