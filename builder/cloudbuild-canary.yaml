@@ -66,4 +66,6 @@ steps:
           
           kubectl apply --namespace production --recursive -f kubernetes/deployments/canary
           kubectl apply --namespace production --recursive -f kubernetes/services
+          
+          echo service available at http://`kubectl --namespace=production get service/gcloud-pipeline -o jsonpath="{.status.loadBalancer.ingress[0].ip}"`
 
