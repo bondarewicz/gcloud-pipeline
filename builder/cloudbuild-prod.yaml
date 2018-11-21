@@ -44,8 +44,9 @@ steps:
   - id: 'deploy'
     name: 'gcr.io/cloud-builders/gcloud'
     env:
-      - 'CLOUDSDK_COMPUTE_ZONE=${_CLOUDSDK_COMPUTE_ZONE}'
-      - 'CLOUDSDK_CONTAINER_CLUSTER=${_CLOUDSDK_CONTAINER_CLUSTER}'
+      - 'PROJECT=parcel-vision'
+      - 'CLUSTER=dev-cluster'
+      - 'ZONE=europe-west2-a'
       - 'KUBECONFIG=/kube/config'
     entrypoint: 'bash'
     args:
@@ -61,8 +62,7 @@ steps:
             --zone "$${ZONE}"  
 
 
-
-          sed -i 's|eu.gcr.io/$PROJECT_ID/gcloud-pipeline:.*|eu.gcr.io/$PROJECT_ID/gcloud-pipeline:$TAG_NAME|' ./kubernetes/deployments/prod/*.yaml
+          sed -i "s|eu.gcr.io/$PROJECT_ID/gcloud-pipeline:.*|eu.gcr.io/$PROJECT_ID/gcloud-pipeline:$TAG_NAME|" ./kubernetes/deployments/prod/*.yaml
           
           kubectl get ns production || kubectl create ns production
           kubectl apply --namespace production --recursive -f kubernetes/deployments/prod
