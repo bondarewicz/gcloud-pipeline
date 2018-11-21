@@ -45,8 +45,8 @@ steps:
   - id: 'deploy'
     name: 'gcr.io/cloud-builders/gcloud'
     env:
-      - 'CLOUDSDK_COMPUTE_ZONE=${_CLOUDSDK_COMPUTE_ZONE}'
-      - 'CLOUDSDK_CONTAINER_CLUSTER=${_CLOUDSDK_CONTAINER_CLUSTER}'
+      - 'CLOUDSDK_COMPUTE_ZONE=europe-west2-a'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=dev-cluster'
       - 'KUBECONFIG=/kube/config'
     entrypoint: 'bash'
     args:
@@ -65,4 +65,6 @@ steps:
           
           kubectl apply --namespace production --recursive -f kubernetes/deployments/canary
           kubectl apply --namespace production --recursive -f kubernetes/services
+          
+          echo service available at http://`kubectl --namespace=production get service/gcloud-pipeline -o jsonpath="{.status.loadBalancer.ingress[0].ip}"`
 
