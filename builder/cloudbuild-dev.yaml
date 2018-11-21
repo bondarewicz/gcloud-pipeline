@@ -19,15 +19,14 @@ steps:
   - id: 'build'
     name: 'gcr.io/cloud-builders/docker'
     entrypoint: 'bash'
-    env:
-      - 'BRANCH="$(git branch | grep \* | cut -d ' ' -f2 | tr '//' '-')"'
     args: 
       - '-c'
       - |
           echo "BRANCH_NAME $BRANCH_NAME"
-          echo "BRANCH $BRANCH"
+          export _BRANCH="$(git branch | grep \* | cut -d ' ' -f2 | tr '//' '-')"
+          echo "BRANCH $_BRANCH"
           
-          docker build -t eu.gcr.io/$PROJECT_ID/gcloud-pipeline:${BRANCH}-${SHORT_SHA} .
+          docker build -t eu.gcr.io/$PROJECT_ID/gcloud-pipeline:$_BRANCH-${SHORT_SHA} .
 
 
 
