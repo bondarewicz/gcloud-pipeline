@@ -22,7 +22,8 @@ steps:
     args: 
       - '-c'
       - |
-          docker build -t eu.gcr.io/$PROJECT_ID/gcloud-pipeline:${BRANCH_NAME | tr '//' '-'}-${SHORT_SHA} .
+          export BRANCH_NAME_NORM=$(echo ${BRANCH_NAME} | tr '//' '-')
+          docker build -t eu.gcr.io/$PROJECT_ID/gcloud-pipeline:${BRANCH_NAME_NORM}-${SHORT_SHA} .
 
 
 
