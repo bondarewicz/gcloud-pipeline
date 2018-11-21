@@ -29,7 +29,7 @@ steps:
           echo $BRANCH_NAME | tr '//' '-'
           
           export _BRANCH_NAME=$BRANCH_NAME | tr '//' '-'
-          echo "_BRANCH_NAME $_BRANCH_NAME"
+          echo "${_BRANCH_NAME}"
           
           docker build -t eu.gcr.io/$PROJECT_ID/gcloud-pipeline:${_BRANCH_NAME}-${SHORT_SHA} .
 
