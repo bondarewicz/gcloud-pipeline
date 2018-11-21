@@ -23,10 +23,10 @@ steps:
       - '-c'
       - |
           echo "before $BRANCH_NAME"
-          export BRANCH_NAME="$(git branch | grep \* | cut -d ' ' -f2 | tr '//' '-')"
+          export BRANCH="$(git branch | grep \* | cut -d ' ' -f2 | tr '//' '-')"
           echo "after $BRANCH_NAME"
           
-          docker build -t eu.gcr.io/$PROJECT_ID/gcloud-pipeline:${BRANCH_NAME}-${SHORT_SHA} .
+          docker build -t eu.gcr.io/$PROJECT_ID/gcloud-pipeline:${BRANCH}-${SHORT_SHA} .
 
 
 
