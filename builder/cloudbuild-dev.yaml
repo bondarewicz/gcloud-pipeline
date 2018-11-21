@@ -23,6 +23,9 @@ steps:
       - '-c'
       - |
           echo "BRANCH_NAME $BRANCH_NAME"
+          echo $(git symbolic-ref --short HEAD)
+          echo $(git symbolic-ref --short HEAD | tr '//' '-')
+          
           export _BRANCH=$(git symbolic-ref --short HEAD | tr '//' '-')
           echo "BRANCH $_BRANCH"
           
