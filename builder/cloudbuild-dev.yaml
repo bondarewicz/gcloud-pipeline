@@ -22,9 +22,11 @@ steps:
     args: 
       - '-c'
       - |
-          docker build -t eu.gcr.io/$PROJECT_ID/gcloud-pipeline:${BRANCH_NAME}-${SHORT_SHA} .
-
-
+          echo "raw $BRANCH_NAME"
+          _tmpvar=`echo $BRANCH_NAME | tr '//' '-'`
+          echo ${_tmpvar}
+          echo "eu.gcr.io/$PROJECT_ID/gcloud-pipeline:${_MOD_BRANCH_NAME}-${SHORT_SHA}"
+          docker build -t eu.gcr.io/$PROJECT_ID/gcloud-pipeline:${_MOD_BRANCH_NAME}-${SHORT_SHA} .
 
 ### Test
 
@@ -36,7 +38,10 @@ steps:
     args: 
       - '-c'
       - |
-          docker push eu.gcr.io/$PROJECT_ID/gcloud-pipeline:${BRANCH_NAME}-${SHORT_SHA}
+          _tmpvar=`echo $BRANCH_NAME | tr '//' '-'`
+          echo ${_tmpvar}
+          echo "eu.gcr.io/$PROJECT_ID/gcloud-pipeline:${_MOD_BRANCH_NAME}-${SHORT_SHA}"
+          docker push eu.gcr.io/$PROJECT_ID/gcloud-pipeline:${_MOD_BRANCH_NAME}-${SHORT_SHA}
 
 
 
@@ -44,28 +49,34 @@ steps:
   - id: 'deploy'
     name: 'gcr.io/cloud-builders/gcloud'
     env:
-      - 'CLOUDSDK_COMPUTE_ZONE=${_CLOUDSDK_COMPUTE_ZONE}'
-      - 'CLOUDSDK_CONTAINER_CLUSTER=${_CLOUDSDK_CONTAINER_CLUSTER}'
+      - 'PROJECT=parcel-vision'
+      - 'CLUSTER=dev-cluster'
+      - 'ZONE=europe-west2-a'
       - 'KUBECONFIG=/kube/config'
     entrypoint: 'bash'
     args:
       - '-c'
-      - |
-          CLUSTER=$$(gcloud config get-value container/cluster)
-          PROJECT=$$(gcloud config get-value core/project)
-          ZONE=$$(gcloud config get-value compute/zone)
-          
+      - |          
           gcloud container clusters get-credentials "$${CLUSTER}" \
             --project "$${PROJECT}" \
             --zone "$${ZONE}"  
 
 
+          _tmpvar=`echo $BRANCH_NAME | tr '//' '-'`
+          echo ${_tmpvar}
           
+          echo "eu.gcr.io/$PROJECT_ID/gcloud-pipeline:${_MOD_BRANCH_NAME}-${SHORT_SHA}"
           
 
-          sed -i 's|eu.gcr.io/$PROJECT_ID/gcloud-pipeline:.*|eu.gcr.io/$PROJECT_ID/gcloud-pipeline:${BRANCH_NAME}-${SHORT_SHA}|' ./kubernetes/deployments/dev/*.yaml
+          sed -i "s|eu.gcr.io/$PROJECT_ID/gcloud-pipeline:.*|eu.gcr.io/$PROJECT_ID/gcloud-pipeline:${_MOD_BRANCH_NAME}-${SHORT_SHA}|" ./kubernetes/deployments/dev/*.yaml
           
-          kubectl get ns ${BRANCH_NAME} || kubectl create ns ${BRANCH_NAME}
-          kubectl apply --namespace ${BRANCH_NAME} --recursive -f kubernetes/deployments/dev
-          kubectl apply --namespace ${BRANCH_NAME} --recursive -f kubernetes/services
+          cat ./kubernetes/deployments/dev/gcloud-pipeline-dev.yaml
+          
+          kubectl get ns ${_MOD_BRANCH_NAME} || kubectl create ns ${_MOD_BRANCH_NAME}
+          kubectl apply --namespace ${_MOD_BRANCH_NAME} --recursive -f kubernetes/deployments/dev
+          kubectl apply --namespace ${_MOD_BRANCH_NAME} --recursive -f kubernetes/services
 
+substitutions:
+  _MOD_BRANCH_NAME: $_tmpvar
+options:
+  substitution_option: 'ALLOW_LOOSE'  

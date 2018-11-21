@@ -45,8 +45,9 @@ steps:
   - id: 'deploy'
     name: 'gcr.io/cloud-builders/gcloud'
     env:
-      - 'CLOUDSDK_COMPUTE_ZONE=europe-west2-a'
-      - 'CLOUDSDK_CONTAINER_CLUSTER=dev-cluster'
+      - 'PROJECT=parcel-vision'
+      - 'CLUSTER=dev-cluster'
+      - 'ZONE=europe-west2-a'
       - 'KUBECONFIG=/kube/config'
     entrypoint: 'bash'
     args:
@@ -61,7 +62,7 @@ steps:
             --zone "$${ZONE}"  
          
 
-          sed -i 's|eu.gcr.io/$PROJECT_ID/gcloud-pipeline:.*|eu.gcr.io/$PROJECT_ID/gcloud-pipeline:${SHORT_SHA}|' ./kubernetes/deployments/canary/*.yaml
+          sed -i "s|eu.gcr.io/$PROJECT_ID/gcloud-pipeline:.*|eu.gcr.io/$PROJECT_ID/gcloud-pipeline:${SHORT_SHA}|" ./kubernetes/deployments/canary/*.yaml
           
           kubectl apply --namespace production --recursive -f kubernetes/deployments/canary
           kubectl apply --namespace production --recursive -f kubernetes/services
