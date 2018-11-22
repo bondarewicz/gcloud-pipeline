@@ -31,7 +31,7 @@ spec:
         image: eu.gcr.io/parcel-vision/gcloud-pipeline:latest
         resources:
           limits:
-            memory: "500Mi"
+            memory: "64Mi"
             cpu: "100m"
         imagePullPolicy: IfNotPresent
         ports:
