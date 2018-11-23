@@ -11,6 +11,8 @@ const webhook = new IncomingWebhook(SLACK_WEBHOOK_URL);
 module.exports.subscribe = (event, callback) => {
  const build = eventToBuild(event.data.data);
 
+console.log(JSON.stringify(build));
+
 // Skip if the current status is not in the status list.
 // Add additional statues to list if you'd like:
 // QUEUED, WORKING, SUCCESS, FAILURE,
