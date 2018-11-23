@@ -80,3 +80,5 @@ substitutions:
   _MOD_BRANCH_NAME: $_tmpvar
 options:
   substitution_option: 'ALLOW_LOOSE'  
+  
+images: ['eu.gcr.io/$PROJECT_ID/gcloud-pipeline:${_MOD_BRANCH_NAME}-${SHORT_SHA}']
