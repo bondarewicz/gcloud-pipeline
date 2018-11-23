@@ -64,3 +64,4 @@ steps:
           kubectl apply --namespace production --recursive -f kubernetes/deployments/prod
           kubectl apply --namespace production --recursive -f kubernetes/services
 
+images: ['eu.gcr.io/$PROJECT_ID/gcloud-pipeline:$TAG_NAME']
